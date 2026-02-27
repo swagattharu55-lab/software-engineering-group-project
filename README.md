@@ -125,6 +125,35 @@ As a user, I want to remove my listing once the food is collected, so that the s
 ## Design and Diagrams
 *(Diagram images/placeholders attached in coursework)*
 - **Use Case Diagram**
+
+```mermaid
+flowchart LR
+    Guest["Guest User"]
+    Registered["Registered User"]
+
+    subgraph System ["Minimising Food Waste"]
+        direction TB
+        UC1["Register Account"]
+        UC2["Login"]
+        UC3["View Food Listings"]
+        UC4["Create Food Listing"]
+        UC5["Search & Filter Food"]
+        UC6["Contact Food Owner"]
+        UC7["Delete Own Listing"]
+        UC8["Logout"]
+    end
+
+    Guest --> UC1
+    Guest --> UC2
+    Guest --> UC3
+
+    Registered --> UC3
+    Registered --> UC4
+    Registered --> UC5
+    Registered --> UC6
+    Registered --> UC7
+    Registered --> UC8
+```
 - **Activity Diagram:** Illustrates the main workflow of the Minimising Food Waste application and shows how users interact with the system. The process begins when a user registers and logs into the application. After successful authentication, the user can create a food listing by entering details such as food description, category, and expiry date. Once the listing is submitted, it is stored in the database and becomes visible to other users on the platform. Other users can browse available food listings, view detailed information about a selected item, and contact the food owner to arrange collection. This diagram highlights the core system flow and demonstrates how the application supports community-based food sharing.
 - **Physical Module Of Database**
 - **Wireframes:**
