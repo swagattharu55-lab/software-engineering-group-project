@@ -1,25 +1,24 @@
 extends ../layout
 block content
-  h1 Share Surplus Food
-  form.form(action='/listings' method='POST')
-    div.form-group
-      label Title
-      input(type='text' name='title' placeholder='What are you sharing?' required)
-    div.form-group
-      label Description
-      textarea(name='description' placeholder='Describe the food item...' required)
-    div.form-group
-      label Quantity
-      input(type='number' name='quantity' value='1' min='1' required)
-    div.form-group
-      label Expiry Date
-      input(type='date' name='expiry_date' required)
-    div.form-group
-      label Category
-      select(name='category_id')
-        option(value='1') Fruit
-        option(value='2') Vegetables
-        option(value='3') Dairy
-        option(value='4') Bakery
-        option(value='5') Canned
-    button.btn(type='submit') Share Food
+  div.form-container
+    h1 Share Surplus Food
+    p Help reduce food waste by sharing what you have
+    form.form(action='/listings' method='POST')
+      div.form-group
+        label Title
+        input(type='text' name='title' placeholder='What are you sharing?' required)
+      div.form-group
+        label Description
+        textarea(name='description' placeholder='Describe the food item, quantity, condition...' required)
+      div.form-group
+        label Quantity
+        input(type='number' name='quantity' value='1' min='1' required)
+      div.form-group
+        label Expiry Date
+        input(type='date' name='expiry_date' required)
+      div.form-group
+        label Category
+        select(name='category_id')
+          each cat in categories
+            option(value=cat.id)= cat.name
+      button.btn(type='submit') Share Food 🥗

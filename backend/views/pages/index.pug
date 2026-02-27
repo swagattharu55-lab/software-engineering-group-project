@@ -1,10 +1,28 @@
 extends ../layout
 block content
   section.hero
-    h1 Share Food, Reduce Waste
-    p Connect with your community and share surplus food
-    a.btn(href='/listings') Browse Listings
-    a.btn.btn-outline(href='/listings/new') Share Food
+    div.hero-content
+      h1 Share Food, Reduce Waste
+      p Connect with your community and share surplus food for free
+      div.hero-buttons
+        a.btn(href='/listings') Browse Listings
+        a.btn.btn-outline(href='/listings/new') Share Food
+  section.stats
+    div.stat-card
+      h2= userCount
+      p Community Members
+    div.stat-card
+      h2= listingCount
+      p Food Listings
+    div.stat-card
+      h2 0
+      p Kg Waste Saved
+  section.categories-section
+    h2 Browse by Category
+    div.categories-grid
+      each cat in categories
+        a.category-card(href='/listings?category=' + cat.id)
+          span= cat.name
   section.features
     div.feature
       h3 🌱 Reduce Waste
@@ -13,5 +31,5 @@ block content
       h3 🤝 Build Community
       p Connect with people nearby
     div.feature
-      h3 💚 Free to Use
+      h3 💚 Completely Free
       p No money involved just sharing

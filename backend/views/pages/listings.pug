@@ -1,25 +1,26 @@
 extends ../layout
 block content
-  h1 Available Food
-  div.actions-bar(style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;")
+  div.page-header
+    h1 Available Food
     a.btn(href='/listings/new') + Share Food
-    if categories
-      form.filter-form(action='/listings' method='GET')
-        select(name='category_id' onchange='this.form.submit()' style="padding: 10px; border-radius: 5px; border: 1px solid #ddd;")
-          option(value='') All Categories
-          each category in categories
-            option(value=category.id selected=(selectedCategory == category.id))= category.name
-  div.listings-grid
-    each listing in listings
-      div.listing-card
-        div.listing-header
-          h3= listing.title
-          span.badge= listing.status
-        p= listing.description
-        if listing.category_name
-          p 🏷️ Category: #{listing.category_name}
-        p 📦 Quantity: #{listing.quantity}
-        p 📅 Expires: #{listing.expiry_date}
-        p 👤 Shared by: #{listing.user_name}
-        p 📍 #{listing.location}
-        a.btn(href='/listings/' + listing.id) View Details
+  div.filter-bar
+    a.filter-btn(href='/listings') All
+    each cat in categories
+      a.filter-btn(href='/listings?category=' + cat.id class=selectedCategory == cat.id.toString() ? 'active' : '')= cat.name
+  if listings.length === 0
+    p.empty-msg No listings found for this category
+  else
+    div.listings-grid
+      each listing in listings
+        div.listing-card
+          div.listing-header
+            h3= listing.title
+            span.badge= listing.status
+          p= listing.description
+          p 📦 Quantity: #{listing.quantity}
+          p 📅 Expires: #{new Date(listing.expiry_date).toLocaleDateString()}
+          p 👤 #{listing.user_name}
+          p 📍 #{listing.location}
+          if listing.category
+            span.tag= listing.category
+          a.btn(href='/listings/' + listing.id) View Details

@@ -1,12 +1,28 @@
 extends ../layout
 block content
   div.detail-card
-    h1= listing.title
-    p.description= listing.description
+    div.detail-header
+      h1= listing.title
+      span.badge= listing.status
     div.detail-info
-      p 📦 Quantity: #{listing.quantity}
-      p 📅 Expires: #{listing.expiry_date}
-      p 🏷️ Category: #{listing.category}
-      p 👤 Shared by: #{listing.user_name}
-      p 📍 Location: #{listing.location}
-    a.btn(href='/listings') Back to Listings
+      div.info-row
+        span 📦 Quantity
+        strong= listing.quantity
+      div.info-row
+        span 📅 Expires
+        strong= new Date(listing.expiry_date).toLocaleDateString()
+      div.info-row
+        span 🏷️ Category
+        strong= listing.category || 'Uncategorised'
+      div.info-row
+        span 👤 Shared by
+        strong= listing.user_name
+      div.info-row
+        span 📍 Location
+        strong= listing.location
+      div.info-row
+        span ✉️ Contact
+        strong= listing.user_email
+    p.description= listing.description
+    div.detail-actions
+      a.btn(href='/listings') Back to Listings

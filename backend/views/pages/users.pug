@@ -1,10 +1,14 @@
 extends ../layout
 block content
-  h1 Our Community Members
+  div.page-header
+    h1 Our Community Members
+    p People sharing food in your area
   div.users-grid
     each user in users
       div.user-card
-        div.avatar= user.name[0]
+        div.avatar= user.name[0].toUpperCase()
         h3= user.name
+        p ✉️ #{user.email}
         p 📍 #{user.location}
+        p 📅 Joined: #{new Date(user.created_at).toLocaleDateString()}
         a.btn(href='/users/' + user.id) View Profile

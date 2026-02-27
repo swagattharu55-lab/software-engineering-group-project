@@ -1,17 +1,24 @@
 extends ../layout
 block content
-  div.profile
-    div.profile-header
-      div.avatar-large= user.name[0]
-      h1= user.name
-      p 📍 #{user.location}
-      p ✉️ #{user.email}
-    div.profile-listings
-      h2 My Shared Listings
-      each listing in listings
-        div.listing-card
-          h3= listing.title
-          p= listing.description
-          p 📦 Quantity: #{listing.quantity}
-          p 📅 Expires: #{listing.expiry_date}
-          a.btn(href='/listings/' + listing.id) View
+  div.profile-header
+    div.avatar-large= user.name[0].toUpperCase()
+    h1= user.name
+    p ✉️ #{user.email}
+    p 📍 #{user.location}
+  div.profile-listings
+    h2 Food Listings by #{user.name}
+    if listings.length === 0
+      p.empty-msg No listings yet
+    else
+      div.listings-grid
+        each listing in listings
+          div.listing-card
+            div.listing-header
+              h3= listing.title
+              span.badge= listing.status
+            p= listing.description
+            p 📦 Quantity: #{listing.quantity}
+            p 📅 Expires: #{listing.expiry_date}
+            if listing.category
+              span.tag= listing.category
+            a.btn(href='/listings/' + listing.id) View Details

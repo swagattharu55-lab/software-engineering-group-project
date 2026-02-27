@@ -1,20 +1,26 @@
-const User = require('../models/userModel');
+const db = require('../db');
 
-exports.getAllUsers = async (req, res) => {
-  try {
-    // const users = await User.getAll(); // Uncomment when table exists
-    res.json({ message: 'Get all users route working', users: [] });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
+exports.getAllUsers = (req, res) => {
+  db.query('SELECT * FROM users ORDER BY created_at DESC', (err, users) => {
+    if (err) throw err;
+    res.render('pages/users', { users });
+  });
 };
 
-exports.createUser = async (req, res) => {
-  try {
-    const { name, email } = req.body;
-    // const userId = await User.create(name, email); // Uncomment when table exists
-    res.status(201).json({ message: 'User created', userId: 1 });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
+exports.getUserProfile = (req, res) => {
+  const userId = req.params.id;
+  db.query('SELECT * FROM users WHERE id = ?', [userId], (err, result) => {
+    if (err) throw err;
+    if (!result[0]) return res.send('User not found');
+    const user = result[0];
+    const sql = `SELECT listings.*, categories.name as category
+                 FROM listings
+                 LEFT JOIN categories ON listings.category_id = categories.id
+                 WHERE listings.user_id = ?
+                 ORDER BY listings.created_at DESC`;
+    db.query(sql, [userId], (err2, listings) => {
+      if (err2) throw err2;
+      res.render('pages/profile', { user, listings });
+    });
+  });
 };
