@@ -7,8 +7,11 @@ block content
       p 📍 #{user.location}
       p ✉️ #{user.email}
     div.profile-listings
-      h2 Shared Listings
+      h2 My Shared Listings
       each listing in listings
         div.listing-card
           h3= listing.title
           p= listing.description
+          p 📦 Quantity: #{listing.quantity}
+          p 📅 Expires: #{listing.expiry_date}
+          a.btn(href='/listings/' + listing.id) View

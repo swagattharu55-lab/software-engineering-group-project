@@ -1,6 +1,7 @@
 extends ../layout
 block content
   h1 Available Food
+  a.btn(href='/listings/new') + Share Food
   div.listings-grid
     each listing in listings
       div.listing-card
@@ -11,4 +12,5 @@ block content
         p 📦 Quantity: #{listing.quantity}
         p 📅 Expires: #{listing.expiry_date}
         p 👤 Shared by: #{listing.user_name}
+        p 📍 #{listing.location}
         a.btn(href='/listings/' + listing.id) View Details
