@@ -1,0 +1,12 @@
+extends ../layout
+block content
+  div.detail-card
+    h1= listing.title
+    p.description= listing.description
+    div.detail-info
+      p 📦 Quantity: #{listing.quantity}
+      p 📅 Expires: #{listing.expiry_date}
+      p 🏷️ Category: #{listing.category}
+      p 👤 Shared by: #{listing.user_name}
+      p 📍 Location: #{listing.location}
+    a.btn(href='/listings') Back to Listings

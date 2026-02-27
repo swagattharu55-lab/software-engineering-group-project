@@ -1,0 +1,10 @@
+extends ../layout
+block content
+  h1 Our Community Members
+  div.users-grid
+    each user in users
+      div.user-card
+        div.avatar= user.name[0]
+        h3= user.name
+        p 📍 #{user.location}
+        a(href='/users/' + user.id) View Profile

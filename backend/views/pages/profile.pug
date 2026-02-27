@@ -1,0 +1,14 @@
+extends ../layout
+block content
+  div.profile
+    div.profile-header
+      div.avatar-large= user.name[0]
+      h1= user.name
+      p 📍 #{user.location}
+      p ✉️ #{user.email}
+    div.profile-listings
+      h2 Shared Listings
+      each listing in listings
+        div.listing-card
+          h3= listing.title
+          p= listing.description

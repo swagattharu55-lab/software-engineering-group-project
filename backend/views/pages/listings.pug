@@ -1,0 +1,14 @@
+extends ../layout
+block content
+  h1 Available Food
+  div.listings-grid
+    each listing in listings
+      div.listing-card
+        div.listing-header
+          h3= listing.title
+          span.badge= listing.status
+        p= listing.description
+        p 📦 Quantity: #{listing.quantity}
+        p 📅 Expires: #{listing.expiry_date}
+        p 👤 Shared by: #{listing.user_name}
+        a.btn(href='/listings/' + listing.id) View Details

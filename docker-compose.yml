@@ -1,39 +1,29 @@
 version: '3.8'
-
 services:
-  backend:
-    build: ./backend
+  app:
+    build: .
     ports:
       - "3000:3000"
     environment:
       - DB_HOST=db
       - DB_USER=root
-      - DB_PASSWORD=rootpassword
-      - DB_NAME=mydatabase
+      - DB_PASSWORD=password
+      - DB_NAME=foodshare
     depends_on:
       - db
     volumes:
       - ./backend:/app
-      - /app/node_modules
-    networks:
-      - app-network
-
+      - ./frontend:/frontend
   db:
-    image: mysql:8.0
+    image: mysql:8
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: rootpassword
-      MYSQL_DATABASE: mydatabase
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: foodshare
     ports:
       - "3306:3306"
     volumes:
       - db_data:/var/lib/mysql
-    networks:
-      - app-network
-
-networks:
-  app-network:
-    driver: bridge
-
+      - ./backend/db_init.sql:/docker-entrypoint-initdb.d/init.sql
 volumes:
   db_data:
