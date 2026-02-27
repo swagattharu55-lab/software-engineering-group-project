@@ -1,7 +1,14 @@
 extends ../layout
 block content
   h1 Available Food
-  a.btn(href='/listings/new') + Share Food
+  div.actions-bar(style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;")
+    a.btn(href='/listings/new') + Share Food
+    if categories
+      form.filter-form(action='/listings' method='GET')
+        select(name='category_id' onchange='this.form.submit()' style="padding: 10px; border-radius: 5px; border: 1px solid #ddd;")
+          option(value='') All Categories
+          each category in categories
+            option(value=category.id selected=(selectedCategory == category.id))= category.name
   div.listings-grid
     each listing in listings
       div.listing-card
@@ -9,6 +16,8 @@ block content
           h3= listing.title
           span.badge= listing.status
         p= listing.description
+        if listing.category_name
+          p 🏷️ Category: #{listing.category_name}
         p 📦 Quantity: #{listing.quantity}
         p 📅 Expires: #{listing.expiry_date}
         p 👤 Shared by: #{listing.user_name}
