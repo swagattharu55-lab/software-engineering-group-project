@@ -15,7 +15,7 @@ block content
       each user in users
         tr
           td
-            div.avatar-small= user.name[0].toUpperCase()
+            img.avatar-small-img(src='/img/costmor' + (((user.id - 1) % 4) + 1) + '.jpg' alt=user.name)
             strong= user.name
           td= user.email
           td= user.location
@@ -25,7 +25,7 @@ block content
   div.users-grid
     each user in users
       div.user-card
-        div.avatar= user.name[0].toUpperCase()
+        img.avatar-img(src='/img/costmor' + (((user.id - 1) % 4) + 1) + '.jpg' alt=user.name)
         h3= user.name
         p ✉️ #{user.email}
         p 📍 #{user.location}

@@ -1,4 +1,4 @@
-# SolidCare App - Minimising Food Waste Application
+# FoodShare App - Minimising Food Waste Application
 
 ## Group Information
 **Group Name:** CR7  

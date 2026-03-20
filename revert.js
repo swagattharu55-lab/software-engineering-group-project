@@ -27,4 +27,4 @@ function walk(dir) {
 }
 
 walk(__dirname);
-console.log("Rebranding complete.");
+console.log("Reverting complete.");

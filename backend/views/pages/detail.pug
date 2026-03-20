@@ -1,9 +1,12 @@
 extends ../layout
 block content
-  div.detail-card
-    div.detail-header
-      h1= listing.title
-      span.badge= listing.status
+  div.detail-card(style="padding: 0; overflow: hidden;")
+    - var foodImgs = ['https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=600&q=80', 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=600&q=80', 'https://images.unsplash.com/photo-1584472282946-e5040f5ad2b4?auto=format&fit=crop&w=600&q=80', 'https://images.unsplash.com/photo-1610832958506-aa56368176cf?auto=format&fit=crop&w=600&q=80', 'https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=600&q=80']
+    img.detail-hero-img(src=foodImgs[listing.id % 5] alt=listing.title style="width: 100%; height: 350px; object-fit: cover; border-bottom: 2px solid #EEE;" )
+    div(style="padding: 30px;")
+      div.detail-header
+        h1= listing.title
+        span.badge= listing.status
     div.detail-info
       div.info-row
         span 📦 Quantity
@@ -23,9 +26,9 @@ block content
       div.info-row
         span ✉️ Contact
         strong= listing.user_email
-    p.description= listing.description
-    div.detail-actions
-      a.btn(href='/listings') Back to Listings
+      p.description= listing.description
+      div.detail-actions
+        a.btn(href='/listings') Back to Listings
   div.note-form
     h2 Update Category
     form(action='/listings/update-category' method='POST')

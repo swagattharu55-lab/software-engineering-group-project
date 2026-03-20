@@ -1,4 +1,5 @@
 const { User } = require('../models/user');
+const bcrypt = require('bcryptjs');
 const db = require('../services/db');
 
 exports.getAllUsers = async (req, res) => {
@@ -41,12 +42,18 @@ exports.getNewUserForm = (req, res) => {
 
 exports.createUser = async (req, res) => {
   try {
-    const { first_name, last_name, email, dob, mobile } = req.body;
+    const { first_name, last_name, email, password, dob, mobile } = req.body;
     const name = first_name + ' ' + last_name;
+
+    let passwordHash = 'defaultpass';
+    if (password) {
+      passwordHash = await bcrypt.hash(password, 10);
+    }
+
     const insertId = await User.createUser(
       name,
       email,
-      'defaultpass',
+      passwordHash,
       dob ? dob : null,
       mobile ? mobile : null
     );

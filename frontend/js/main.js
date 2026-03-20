@@ -1,4 +1,4 @@
-console.log('SolidCare App Loaded');
+console.log('FoodShare App Loaded');
 const filterBtns = document.querySelectorAll('.filter-btn');
 filterBtns.forEach(btn => {
   if (window.location.href.includes(btn.getAttribute('href')) && btn.getAttribute('href') !== '/listings') {
