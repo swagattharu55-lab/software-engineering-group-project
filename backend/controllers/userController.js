@@ -1,26 +1,62 @@
-const db = require('../db');
+const { User } = require('../models/user');
+const db = require('../services/db');
 
-exports.getAllUsers = (req, res) => {
-  db.query('SELECT * FROM users ORDER BY created_at DESC', (err, users) => {
-    if (err) throw err;
-    res.render('pages/users', { users });
-  });
+exports.getAllUsers = async (req, res) => {
+  try {
+    const results = await db.query('SELECT * FROM users ORDER BY created_at DESC', []);
+    res.render('pages/users', { users: results });
+  } catch (err) {
+    console.error(err);
+    res.send('Error loading users');
+  }
 };
 
-exports.getUserProfile = (req, res) => {
-  const userId = req.params.id;
-  db.query('SELECT * FROM users WHERE id = ?', [userId], (err, result) => {
-    if (err) throw err;
-    if (!result[0]) return res.send('User not found');
-    const user = result[0];
-    const sql = `SELECT listings.*, categories.name as category
-                 FROM listings
-                 LEFT JOIN categories ON listings.category_id = categories.id
-                 WHERE listings.user_id = ?
-                 ORDER BY listings.created_at DESC`;
-    db.query(sql, [userId], (err2, listings) => {
-      if (err2) throw err2;
-      res.render('pages/profile', { user, listings });
-    });
-  });
+exports.getUserProfile = async (req, res) => {
+  try {
+    const user = new User(req.params.id);
+    await user.getUserDetails();
+    await user.getUserListings();
+    res.render('pages/profile', { user, listings: user.listings });
+  } catch (err) {
+    console.error(err);
+    res.send('Error loading profile');
+  }
+};
+
+exports.addUserNote = async (req, res) => {
+  try {
+    const { id, note } = req.body;
+    const user = new User(id);
+    await user.addUserNote(note);
+    res.redirect('/users/' + id);
+  } catch (err) {
+    console.error(err);
+    res.send('Error adding note');
+  }
+};
+
+exports.getNewUserForm = (req, res) => {
+  res.render('pages/new-user');
+};
+
+exports.createUser = async (req, res) => {
+  try {
+    const { first_name, last_name, email, dob, mobile } = req.body;
+    const name = first_name + ' ' + last_name;
+    const insertId = await User.createUser(
+      name,
+      email,
+      'defaultpass',
+      dob ? dob : null,
+      mobile ? mobile : null
+    );
+    res.redirect('/users/' + insertId);
+  } catch (err) {
+    console.error(err);
+    if (err.code === 'ER_DUP_ENTRY') {
+      res.send('Error: This email address is already registered. Please use another.');
+    } else {
+      res.send('Error creating user');
+    }
+  }
 };

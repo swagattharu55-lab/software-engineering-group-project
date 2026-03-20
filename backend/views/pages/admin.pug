@@ -1,0 +1,62 @@
+extends ../layout
+block content
+  div.admin-header
+    h1 Admin Dashboard
+    p Manage SolidCare Community platform
+
+  div.admin-stats
+    div.admin-stat-card
+      h3= userCount
+      p Total Users
+    div.admin-stat-card
+      h3= listingCount
+      p Total Listings
+    div.admin-stat-card
+      h3= categories.length
+      p Food Categories
+
+  div.admin-grid
+    div.admin-section
+      h2 Recent Users
+      table.admin-table
+        thead
+          tr
+            th ID
+            th Name
+            th Email
+            th Joined
+            th Actions
+        tbody
+          each u in users
+            tr
+              td= u.id
+              td= u.name
+              td= u.email
+              td= new Date(u.created_at).toLocaleDateString()
+              td
+                form(action='/admin/delete-user' method='POST' style='display:inline;')
+                  input(type='hidden' name='id' value=u.id)
+                  button.btn-danger(type='submit' onclick="return confirm('Are you sure?')") Delete
+
+    div.admin-section
+      h2 Active Listings
+      table.admin-table
+        thead
+          tr
+            th ID
+            th Title
+            th Category
+            th User
+            th Actions
+        tbody
+          each l in listings
+            tr
+              td= l.id
+              td= l.title
+              td
+                span.tag= l.category
+              td= l.user_name
+              td
+                form(action='/admin/delete-listing' method='POST' style='display:inline;')
+                  input(type='hidden' name='id' value=l.id)
+                  button.btn-danger(type='submit' onclick="return confirm('Are you sure?')") Delete

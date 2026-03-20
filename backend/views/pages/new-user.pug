@@ -1,0 +1,24 @@
+extends ../layout
+block content
+  div.tutorial-form-container
+    h2 Register Your ID
+    form(action='/users/new' method='POST' class='tutorial-form')
+      div.form-row
+        label First Name :
+        input(type='text' name='first_name' required)
+      div.form-row
+        label Last Name :
+        input(type='text' name='last_name' required)
+      div.form-row
+        label Date of Birth :
+        input(type='date' name='dob')
+      div.form-row
+        label Email id :
+        input(type='email' name='email' required)
+      div.form-row
+        label Mobile Number :
+        input(type='tel' name='mobile')
+      
+      div.form-actions
+        button.btn-submit(type='submit') SUBMIT
+        button.btn-reset(type='reset') RESET

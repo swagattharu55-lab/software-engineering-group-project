@@ -3,6 +3,25 @@ block content
   div.page-header
     h1 Our Community Members
     p People sharing food in your area
+  table.users-table
+    thead
+      tr
+        th Name
+        th Email
+        th Location
+        th Joined
+        th Action
+    tbody
+      each user in users
+        tr
+          td
+            div.avatar-small= user.name[0].toUpperCase()
+            strong= user.name
+          td= user.email
+          td= user.location
+          td= new Date(user.created_at).toLocaleDateString()
+          td
+            a.btn(href='/users/' + user.id) View Profile
   div.users-grid
     each user in users
       div.user-card
@@ -10,5 +29,4 @@ block content
         h3= user.name
         p ✉️ #{user.email}
         p 📍 #{user.location}
-        p 📅 Joined: #{new Date(user.created_at).toLocaleDateString()}
         a.btn(href='/users/' + user.id) View Profile

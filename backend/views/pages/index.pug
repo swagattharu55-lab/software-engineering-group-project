@@ -1,12 +1,12 @@
 extends ../layout
 block content
-  section.hero
-    div.hero-content
-      h1 Share Food, Reduce Waste
-      p Connect with your community and share surplus food for free
-      div.hero-buttons
-        a.btn(href='/listings') Browse Listings
-        a.btn.btn-outline(href='/listings/new') Share Food
+  section.hero-split
+    div.hero-text-side
+      h1 Nourishing communities together
+      p FoodCycle community meals bring people together for good food and conversation. We serve free, wholesome meals made from food that would have gone to waste, prepared by volunteers and open to everyone. FoodCycle is about more than food – we create a cycle of positive change – reducing food waste and hunger, tackling loneliness, supporting mental health and encouraging healthy eating and sustainable living.
+      a.btn-crimson(href='https://foodcycle.org.uk/who-we-are/' target='_blank') Who We Are
+    div.hero-image-side
+      img(src='/img/solidcare_img.png' alt='SolidCare Community Meal')
   section.stats
     div.stat-card
       h2= userCount

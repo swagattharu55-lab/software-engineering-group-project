@@ -1,5 +1,5 @@
-CREATE DATABASE IF NOT EXISTS foodshare;
-USE foodshare;
+CREATE DATABASE IF NOT EXISTS solidcare;
+USE solidcare;
 
 CREATE TABLE IF NOT EXISTS users (
   id INT AUTO_INCREMENT PRIMARY KEY,
@@ -7,6 +7,9 @@ CREATE TABLE IF NOT EXISTS users (
   email VARCHAR(100) UNIQUE NOT NULL,
   password_hash VARCHAR(255) NOT NULL,
   location VARCHAR(100),
+  note TEXT,
+  dob DATE,
+  mobile VARCHAR(20),
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 

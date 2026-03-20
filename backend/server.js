@@ -16,10 +16,12 @@ app.set('views', path.join(__dirname, 'views'));
 const indexRoutes = require('./routes/index');
 const userRoutes = require('./routes/users');
 const listingRoutes = require('./routes/listings');
+const adminRoutes = require('./routes/admin');
 
 app.use('/', indexRoutes);
 app.use('/users', userRoutes);
 app.use('/listings', listingRoutes);
+app.use('/admin', adminRoutes);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

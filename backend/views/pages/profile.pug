@@ -5,6 +5,10 @@ block content
     h1= user.name
     p ✉️ #{user.email}
     p 📍 #{user.location}
+    if user.note
+      div.note-box
+        h3 📝 Note
+        p= user.note
   div.profile-listings
     h2 Food Listings by #{user.name}
     if listings.length === 0
@@ -18,7 +22,14 @@ block content
               span.badge= listing.status
             p= listing.description
             p 📦 Quantity: #{listing.quantity}
-            p 📅 Expires: #{listing.expiry_date}
+            p 📅 Expires: #{new Date(listing.expiry_date).toLocaleDateString()}
             if listing.category
               span.tag= listing.category
             a.btn(href='/listings/' + listing.id) View Details
+  div.note-form
+    h2 Add a Note
+    form(action='/users/add-note' method='POST')
+      input(type='hidden' name='id' value=user.id)
+      textarea(name='note' rows=4 placeholder='Add a note about this user...')
+      div
+      button.btn(type='submit') Save Note

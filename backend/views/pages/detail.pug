@@ -26,3 +26,15 @@ block content
     p.description= listing.description
     div.detail-actions
       a.btn(href='/listings') Back to Listings
+  div.note-form
+    h2 Update Category
+    form(action='/listings/update-category' method='POST')
+      input(type='hidden' name='id' value=listing.id)
+      select(name='category_id' style='width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 1rem; margin-bottom: 10px;')
+        each cat in categories
+          if listing.category_id == cat.id
+            option(value=cat.id selected='selected') #{cat.name}
+          else
+            option(value=cat.id) #{cat.name}
+      div
+      button.btn(type='submit') Save Category
