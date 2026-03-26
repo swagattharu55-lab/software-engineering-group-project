@@ -4,26 +4,103 @@ html(lang="en")
     meta(charset="UTF-8")
     meta(name="viewport", content="width=device-width, initial-scale=1.0")
     title #{title} | Minimising Food Waste
+    link(rel="manifest", href="/manifest.json")
+    link(href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap", rel="stylesheet")
     style.
-      body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0; background-color: #f4f7f6; color: #333; }
-      nav { background-color: #4CAF50; padding: 1rem 2rem; color: white; display:flex; justify-content: space-between; align-items:center; }
-      nav a { color: white; text-decoration: none; margin-left: 1rem; font-weight: bold; }
-      nav a:hover { text-decoration: underline; }
-      .container { max-width: 1000px; margin: 2rem auto; padding: 0 1rem; }
-      .card { background: white; padding: 1.5rem; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-bottom: 1rem; transition: transform 0.2s; }
-      .card:hover { transform: translateY(-2px); box-shadow: 0 6px 12px rgba(0,0,0,0.15); }
-      .btn { background-color: #4CAF50; color: white; padding: 0.5rem 1rem; text-decoration: none; border-radius: 4px; display: inline-block; font-weight:bold; transition: background-color 0.2s;}
-      .btn:hover { background-color: #45a049; }
-      h1, h2, h3 { color: #2e7d32; margin-top:0; }
-      .badge { background: #e8f5e9; color: #2e7d32; padding: 0.25rem 0.5rem; border-radius: 12px; font-size: 0.85em; font-weight:bold; }
+      :root {
+        --primary: #FF6B6B;
+        --secondary: #4ECDC4;
+        --accent: #FFE66D;
+        --dark: #2C3E50;
+        --light: #F7F9F9;
+      }
+      body { 
+        font-family: 'Poppins', sans-serif; 
+        margin: 0; 
+        padding: 0; 
+        background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%); 
+        color: var(--dark); 
+        min-height: 100vh;
+      }
+      nav { 
+        background: linear-gradient(90deg, var(--primary), var(--secondary)); 
+        padding: 1rem 2rem; 
+        color: white; 
+        display:flex; 
+        justify-content: space-between; 
+        align-items:center; 
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      }
+      nav a { color: white; text-decoration: none; margin-left: 1rem; font-weight: 600; transition: color 0.3s; }
+      nav a:hover { color: var(--accent); }
+      .container { max-width: 1200px; margin: 2rem auto; padding: 0 1rem; }
+      .card { 
+        background: rgba(255, 255, 255, 0.9); 
+        padding: 1.5rem; 
+        border-radius: 16px; 
+        box-shadow: 0 10px 30px rgba(0,0,0,0.05); 
+        margin-bottom: 1.5rem; 
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255,255,255,0.5);
+        transition: transform 0.3s ease;
+      }
+      .card:hover { transform: translateY(-5px); }
+      .btn { 
+        display: inline-block; 
+        padding: 0.6rem 1.2rem; 
+        background: linear-gradient(45deg, var(--primary), #ff8e8e); 
+        color: white; 
+        text-decoration: none; 
+        border: none; 
+        border-radius: 30px; 
+        cursor: pointer; 
+        font-weight: 600;
+        box-shadow: 0 4px 10px rgba(255, 107, 107, 0.3);
+        transition: all 0.3s ease;
+      }
+      .btn:hover { 
+        transform: scale(1.05); 
+        box-shadow: 0 6px 15px rgba(255, 107, 107, 0.5); 
+      }
+      .badge { 
+        display: inline-block; 
+        padding: 0.35rem 0.75rem; 
+        background-color: var(--secondary); 
+        color: white;
+        border-radius: 20px; 
+        font-size: 0.85rem; 
+        font-weight: 600;
+        margin-right: 0.5rem; 
+        box-shadow: 0 2px 5px rgba(78, 205, 196, 0.3);
+      }
+      h1, h2, h3 { color: var(--dark); font-weight: 700; }
   body
     nav
-      div.logo 
-        strong(style="font-size: 1.2rem;") 🥗 FoodShare CR7
+      div
+        a(href="/", style="font-weight:bold; font-size:1.8rem; text-decoration:none; color:white; letter-spacing: 1px;") 🍽️ Share Food
       div.links
         a(href="/listings") Available Food
         a(href="/categories") Categories
-        a(href="/users") Community Users
+        a(href="/users") Community
+        if user
+          a(href="/dashboard", style="color:#ffeb3b;") Dashboard
+          a(href="/settings", style="color:#4ECDC4;") Settings
+          if user.role === 'admin'
+            a(href="/admin", style="color:#f44336; font-weight:bold;") Admin Panel
+          a(href="/logout", style="color:#ffcc80;") Logout (#{user.name})
+        else
+          a(href="/login", style="border: 1px solid white; padding: 0.3rem 0.6rem; border-radius: 4px;") Login
+          a(href="/register", style="background: white; color: #4CAF50; padding: 0.3rem 0.6rem; border-radius: 4px;") Register
     
     div.container
       block content
+
+    script.
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.getRegistrations().then(function(registrations) {
+          for(let registration of registrations) {
+            registration.unregister();
+            console.log('Unregistered conflicting PWA ServiceWorker.');
+          }
+        });
+      }

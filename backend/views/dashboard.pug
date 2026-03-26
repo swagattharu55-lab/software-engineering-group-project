@@ -1,0 +1,103 @@
+extends layout
+
+block content
+  h1 My Dashboard
+  p Welcome back, #{user.name}. Here you can manage your shared food and view your messages.
+  p(style="font-size:0.8rem; color:#aaa;") Telemetry: Running UI Optimization Group [#{user.abGroup || 'A'}]
+  
+  //- Expiry Alerts
+  - const now = new Date()
+  - const upcomingExp = listings.filter(l => new Date(l.expiry_date) - now < 48*60*60*1000 && l.status === 'available')
+  if upcomingExp.length
+    div.card(style="background-color: #fff3e0; border-left: 4px solid #ff9800;")
+      h3(style="margin-top:0; color:#e65100;") ⚠️ Expiring Soon
+      p You have #{upcomingExp.length} active food item(s) expiring within 48 hours! Consider updating their descriptions.
+  
+  //- Add Listing Section
+  div.card(style="margin-top: 2rem; border-left: 4px solid #4CAF50;")
+    h2 Share Surplus Food
+    form(action="/listings/create", method="POST", enctype="multipart/form-data")
+      div(style="display:flex; gap: 1rem; flex-wrap:wrap;")
+        div(style="flex:1; min-width:200px;")
+          label(for="title", style="font-weight:bold;") Food Title
+          br
+          input(type="text", name="title", required, style="width:100%; box-sizing:border-box; padding:0.5rem; margin-top:0.5rem;")
+        div(style="flex:1; min-width:200px;")
+          label(for="category_id", style="font-weight:bold;") Category
+          br
+          select(name="category_id", required, style="width:100%; box-sizing:border-box; padding:0.5rem; margin-top:0.5rem;")
+            each category in categories
+              option(value=category.id)= category.name
+        div(style="flex:1; min-width:80px;")
+          label(for="quantity", style="font-weight:bold;") Qty
+          br
+          input(type="number", name="quantity", value="1", min="1", required, style="width:100%; box-sizing:border-box; padding:0.5rem; margin-top:0.5rem;")
+        div(style="flex:1; min-width:150px;")
+          label(for="expiry_date", style="font-weight:bold;") Expiry Date
+          br
+          input(type="date", name="expiry_date", required, style="width:100%; box-sizing:border-box; padding:0.5rem; margin-top:0.5rem;")
+      
+      div(style="display:flex; gap: 1rem; flex-wrap:wrap; margin-top: 1rem;")
+        div(style="flex:1; min-width:200px;")
+          label(for="location", style="font-weight:bold;") Pickup Location
+          br
+          input(type="text", name="location", required, placeholder="e.g. City Centre Campus", style="width:100%; box-sizing:border-box; padding:0.5rem; margin-top:0.5rem;")
+        div(style="flex:1; min-width:200px;")
+          label(for="image", style="font-weight:bold;") Upload Photo (Optional)
+          br
+          input(type="file", name="image", accept="image/*", style="width:100%; box-sizing:border-box; padding:0.4rem; margin-top:0.5rem;")
+
+      div(style="margin-top: 1rem;")
+        label(for="description", style="font-weight:bold;") Description
+        br
+        textarea(name="description", required, rows="3", style="width:100%; box-sizing:border-box; padding:0.5rem; margin-top:0.5rem;")
+      
+      button.btn(type="submit", style="margin-top:1rem;") Share Food
+
+  //- My Listings Section
+  h2(style="margin-top: 2rem;") My Shared Food
+  if listings.length
+    div(style="display:grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem;")
+      each listing in listings
+        div.card
+          h3(style="margin-top:0;")= listing.title
+          span.badge= listing.category_name
+          p 📅 Expires: #{new Date(listing.expiry_date).toLocaleDateString()}
+          div(style="display:flex; justify-content:space-between; margin-top:1rem; border-top:1px solid #eee; padding-top:1rem;")
+            a.btn(href=`/listings/${listing.id}`, style="background-color:#2196F3;") View
+            form(action=`/listings/${listing.id}/delete`, method="POST", style="display:inline;")
+              button.btn(type="submit", style="background-color:#f44336;") Delete
+  else
+    p You haven't shared any surplus food yet.
+
+  //- Incoming Requests
+  h2(style="margin-top: 2rem;") Incoming Requests
+  if incomingRequests && incomingRequests.length
+    each reqDoc in incomingRequests
+      div.card(style="border-left: 4px solid #ff9800;")
+        p <strong>#{reqDoc.requester_name}</strong> requested your <strong>#{reqDoc.listing_title}</strong>
+        p Status: <span class="badge" style="background:#333; color:white;">#{reqDoc.status}</span>
+        if reqDoc.status === 'pending'
+          form(action=`/requests/${reqDoc.id}/accept`, method="POST", style="display:inline; margin-top:0.5rem;")
+            button.btn(type="submit", style="background-color:#4CAF50; margin-right:0.5rem;") Accept
+          form(action=`/requests/${reqDoc.id}/reject`, method="POST", style="display:inline; margin-top:0.5rem;")
+            button.btn(type="submit", style="background-color:#f44336;") Reject
+        if reqDoc.status === 'completed'
+          a.btn(href=`/ratings/new/${reqDoc.id}`, style="background-color:#ffeb3b; color:#333; margin-top:0.5rem; display:inline-block; font-weight:bold;") ⭐ Rate User
+  else
+    p No one has requested your food yet.
+
+  //- My Outgoing Requests
+  h2(style="margin-top: 2rem;") My Requests
+  if outgoingRequests && outgoingRequests.length
+    each reqDoc in outgoingRequests
+      div.card(style="border-left: 4px solid #2196F3;")
+        p You requested <strong>#{reqDoc.listing_title}</strong> from <strong>#{reqDoc.owner_name}</strong>
+        p Status: <span class="badge" style="background:#333; color:white;">#{reqDoc.status}</span>
+        if reqDoc.status === 'accepted'
+          form(action=`/requests/${reqDoc.id}/complete`, method="POST", style="margin-top:0.5rem;")
+            button.btn(type="submit", style="background-color:#9c27b0;") Mark as Collected
+        if reqDoc.status === 'completed'
+          a.btn(href=`/ratings/new/${reqDoc.id}`, style="background-color:#ffeb3b; color:#333; margin-top:0.5rem; display:inline-block; font-weight:bold;") ⭐ Rate User
+  else
+    p You haven't made any food requests yet.

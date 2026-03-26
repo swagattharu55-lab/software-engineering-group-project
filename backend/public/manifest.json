@@ -1,0 +1,16 @@
+{
+  "name": "FoodShare CR7",
+  "short_name": "FoodShare",
+  "description": "Community food sharing and surplus redistribution platform.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#4CAF50",
+  "icons": [
+    {
+      "src": "/images/placeholder.jpg",
+      "sizes": "192x192",
+      "type": "image/jpeg"
+    }
+  ]
+}

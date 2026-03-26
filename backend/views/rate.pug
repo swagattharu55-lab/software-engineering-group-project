@@ -1,0 +1,20 @@
+extends layout
+block content
+  div.card(style="max-width:500px; margin:2rem auto; border-top: 4px solid #ffeb3b;")
+    h1 Rate Your Experience
+    p Please rate your transaction regarding <strong>#{foodTitle}</strong>.
+    form(action="/ratings", method="POST")
+      input(type="hidden", name="rated_id", value=ratedId)
+      input(type="hidden", name="request_id", value=request.id)
+      
+      div(style="margin-top: 1.5rem;")
+        label(for="score", style="font-weight:bold; font-size:1.1rem;") Star Rating (1 to 5)
+        br
+        input(type="number", name="score", min="1", max="5", value="5", required, style="width:100px; padding:0.5rem; font-size:1.2rem; margin-top:0.5rem;")
+      
+      div(style="margin-top:1.5rem;")
+        label(for="review", style="font-weight:bold;") Written Review (Optional)
+        br
+        textarea(name="review", rows="4", placeholder="How was the pickup? Was the food as described?", style="width:100%; box-sizing:border-box; padding:0.5rem; margin-top:0.5rem;")
+      
+      button.btn(type="submit", style="margin-top:1.5rem; width:100%; background-color:#ffeb3b; color:#333; font-weight:bold;") Submit Rating

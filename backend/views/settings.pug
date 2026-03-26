@@ -1,0 +1,48 @@
+extends layout
+block content
+  div.card(style="max-width:600px; margin:0 auto;")
+    h1(style="margin-bottom:1.5rem;") ⚙️ Account Settings
+    
+    //- Update Profile Info
+    h3 Update Personal Information
+    form(action="/settings/update", method="POST", enctype="multipart/form-data", style="background:#f9f9f9; padding:1.5rem; border-radius:8px;")
+      input(type="hidden", name="existing_pic", value=userProfile.profile_pic)
+      div(style="display:flex; align-items:center; gap:1rem;")
+        if userProfile.profile_pic && userProfile.profile_pic !== '/images/default-avatar.png'
+          img(src=userProfile.profile_pic, style="width:80px; height:80px; border-radius:50%; object-fit:cover; border:2px solid #4CAF50;")
+        else
+          div(style="width:80px; height:80px; background:#4CAF50; color:white; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; font-size:2.5rem; font-weight:bold;") #{userProfile.name.charAt(0)}
+        
+        div
+          label(style="font-weight:bold;") Profile Picture (.jpg/.png)
+          br
+          input(type="file", name="profile_pic", accept="image/*", style="margin-top:0.5rem;")
+      
+      div(style="margin-top:1.5rem;")
+        label(style="font-weight:bold;") Display Name
+        input(type="text", name="name", value=userProfile.name, required, style="width:100%; box-sizing:border-box; padding:0.6rem; border-radius:4px; border:1px solid #ccc; margin-top:0.5rem;")
+      
+      div(style="margin-top:1.5rem;")
+        label(style="font-weight:bold;") Default Location
+        input(type="text", name="location", value=userProfile.location, required, style="width:100%; box-sizing:border-box; padding:0.6rem; border-radius:4px; border:1px solid #ccc; margin-top:0.5rem;")
+      
+      button.btn(type="submit", style="margin-top:1.5rem; width:100%;") Save Profile Details
+    
+    //- Change Password
+    h3(style="margin-top:2.5rem;") Security & Password
+    form(action="/settings/password", method="POST", style="background:#f9f9f9; padding:1.5rem; border-radius:8px;")
+      div
+        label(style="font-weight:bold;") Current Password
+        input(type="password", name="current_password", required, style="width:100%; box-sizing:border-box; padding:0.6rem; border-radius:4px; border:1px solid #ccc; margin-top:0.5rem;")
+      div(style="margin-top:1rem;")
+        label(style="font-weight:bold;") New Password
+        input(type="password", name="new_password", required, style="width:100%; box-sizing:border-box; padding:0.6rem; border-radius:4px; border:1px solid #ccc; margin-top:0.5rem;")
+      div(style="margin-top:1rem;")
+        label(style="font-weight:bold;") Confirm New Password
+        input(type="password", name="confirm_password", required, style="width:100%; box-sizing:border-box; padding:0.6rem; border-radius:4px; border:1px solid #ccc; margin-top:0.5rem;")
+      button.btn(type="submit", style="margin-top:1.5rem; width:100%; background-color:#ff9800;") Update Password
+
+    //- Danger Zone
+    h3(style="margin-top:2.5rem; color:#f44336;") 🚨 Danger Zone
+    form(action="/settings/delete", method="POST", onsubmit="return confirm('Are you strictly sure you want to permanently delete your account? All active requests and listings will be completely deleted. This cannot be undone.');")
+      button.btn(type="submit", style="width:100%; background-color:#f44336;") Permanently Delete Account

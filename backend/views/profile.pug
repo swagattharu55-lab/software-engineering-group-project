@@ -1,17 +1,77 @@
 extends layout
 
 block content
-  div.card
-    h1 #{user.name}'s Profile
-    p 
-      strong Email: 
-      | #{user.email}
-    p 
-      strong Location: 
-      | #{user.location || 'Not specified'}
-    p 
-      strong Member since: 
-      | #{new Date(user.created_at).toLocaleDateString()}
+  div.card(style="max-width: 800px; margin: 0 auto; text-align: center; padding: 3rem;")
+    if userProfile.profile_pic && userProfile.profile_pic !== '/images/default-avatar.png'
+      img(src=userProfile.profile_pic, style="width:140px; height:140px; border-radius:50%; object-fit:cover; margin-bottom:1rem; border:4px solid #e8f5e9; box-shadow: 0 4px 10px rgba(0,0,0,0.1);")
+    else
+      div(style="width:120px; height:120px; background:#4CAF50; color:white; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; font-size:4rem; margin-bottom:1rem; border:4px solid #e8f5e9;")
+        | #{userProfile.name.charAt(0)}
+    h1(style="margin-bottom: 0.5rem;")= userProfile.name
+    p(style="margin-top:-0.5rem; font-size:0.9rem; color:#888;") Joined Platform: #{new Date(userProfile.created_at).toLocaleDateString()}
+    p.lead(style="color:#666; font-size:1.2rem; margin-top:0.5rem;") 📍 #{userProfile.location}
+
+    div(style="margin-top: 0.5rem; margin-bottom: 1.5rem; display:inline-block; background:#fff9c4; padding:0.5rem 1.5rem; border-radius:30px;")
+      span(style="font-size:1.5rem; color:#fbc02d; font-weight:bold; margin-right:0.5rem;") ⭐ #{avgRating}
+      span(style="color:#666; font-size:0.9rem;") (#{reviewCount} Reviews)
     
-    div(style="margin-top:2rem;")
-      a.btn(href="/users") Back to Users
+    //- Gamification Stats
+    div(style="display:flex; justify-content:center; gap: 1rem; margin-bottom:2rem;")
+      span.badge(style="font-size:1.2rem; background-color:#9C27B0;") 🎖️ #{userProfile.badges}
+      span.badge(style="font-size:1.2rem; background-color:#FF9800;") 🪙 #{userProfile.points} Points
+    
+    //- Stats section
+    div(style="display:flex; justify-content:center; gap: 2rem; margin: 2rem 0; padding:1.5rem; background:#f9f9f9; border-radius:8px; border:1px solid #eee;")
+      div
+        h2(style="margin:0; color:#2196F3;") #{userListings.length}
+        p(style="margin:0; text-transform:uppercase; font-size:0.85rem; font-weight:bold; color:#777;") Food Shared
+      div(style="border-left:1px solid #ddd; padding-left:2rem;")
+        h2(style="margin:0; color:#4CAF50;") #{completedPickups}
+        p(style="margin:0; text-transform:uppercase; font-size:0.85rem; font-weight:bold; color:#777;") Pickups Handled
+      div(style="border-left:1px solid #ddd; padding-left:2rem;")
+        h2(style="margin:0; color:#ff9800;") #{totalRequested}
+        p(style="margin:0; text-transform:uppercase; font-size:0.85rem; font-weight:bold; color:#777;") Items Requested
+
+  h2(style="margin-top: 3rem; text-align:center;") Active Food Listings
+  if userListings.length
+    div(style="display:grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem;")
+      each listing in userListings
+        if listing.status === 'available'
+          div.card
+            h3(style="margin-top:0;")= listing.title
+            span.badge= listing.category_name
+            p 📅 Expires: #{new Date(listing.expiry_date).toLocaleDateString()}
+            a.btn(href=`/listings/${listing.id}`, style="display:block; text-align:center; margin-top:1rem;") View Details
+  else
+    p(style="text-align:center; color:#666;") This user currently has no active food listings.
+    
+  h2(style="margin-top: 3rem; text-align:center;") 🔗 Trust Ledger (Blockchain Analytics)
+  if completedRequests && completedRequests.length
+    table(style="width:100%; text-align:left; border-collapse:collapse; background:white; font-family:monospace; font-size:0.8rem; margin-bottom:2rem;")
+      thead(style="background:#333; color:white;")
+        tr
+          th(style="padding:0.8rem;") Transaction Date
+          th(style="padding:0.8rem;") Immutable Tx Hash
+          th(style="padding:0.8rem;") Status
+      tbody
+        each tx in completedRequests
+          tr
+            td(style="padding:0.8rem; border-bottom:1px solid #ddd;") #{new Date(tx.created_at).toLocaleDateString()}
+            td(style="padding:0.8rem; border-bottom:1px solid #ddd; color:#4CAF50;") #{tx.blockchain_hash}
+            td(style="padding:0.8rem; border-bottom:1px solid #ddd;") ☑️ Verified
+  else
+    p(style="text-align:center; color:#666;") No completed transaction history available.
+
+  h2(style="margin-top: 3rem; text-align:center;") 💬 Community Reviews
+  if reviews && reviews.length
+    div(style="display:grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; margin-bottom:2rem;")
+      each rev in reviews
+        div.card(style="text-align:left; padding:1.5rem; background:rgba(255,255,255,0.95);")
+          div(style="display:flex; justify-content:space-between; margin-bottom:0.5rem;")
+            strong #{rev.rater_name}
+            span(style="color:#fbc02d; font-weight:bold;") ⭐ #{rev.score}/5
+          if rev.review
+            p(style="color:#444; font-style:italic; line-height:1.4;") "#{rev.review}"
+          p(style="font-size:0.8rem; color:#aaa; margin:1rem 0 0 0;") #{new Date(rev.created_at).toLocaleDateString()}
+  else
+    p(style="text-align:center; color:#666; padding-bottom:3rem;") No written reviews have been submitted yet.

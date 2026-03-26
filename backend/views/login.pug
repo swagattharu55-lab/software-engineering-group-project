@@ -1,0 +1,24 @@
+extends layout
+
+block content
+  div.card(style="max-width: 500px; margin: 0 auto; margin-top: 2rem;")
+    h1 Welcome Back
+    p Login to post food or manage your requests.
+    if error
+      p(style="color: white; background: #f44336; padding: 0.5rem; text-align: center; border-radius: 4px;")= error
+    
+    form(action="/login", method="POST", style="margin-top: 1rem;")
+      div(style="margin-bottom: 1rem;")
+        label(for="email", style="font-weight: bold;") Email Address
+        br
+        input(type="email", name="email", required, style="width: 100%; box-sizing: border-box; padding: 0.5rem; margin-top: 0.5rem;")
+      div(style="margin-bottom: 1.5rem;")
+        label(for="password", style="font-weight: bold;") Password
+        br
+        input(type="password", name="password", required, style="width: 100%; box-sizing: border-box; padding: 0.5rem; margin-top: 0.5rem;")
+      
+      button.btn(type="submit", style="width: 100%; font-size: 1.1rem; padding: 0.75rem;") Sign In
+    
+    p(style="text-align: center; margin-top: 1.5rem;")
+      | Don't have an account? 
+      a(href="/register", style="color: #4CAF50; font-weight: bold;") Register here

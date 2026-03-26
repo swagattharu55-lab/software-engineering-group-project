@@ -4,6 +4,6 @@ const userController = require('../controllers/userController');
 
 // Standard MVC paths returning HTML pages
 router.get('/', userController.getAllUsers);
-router.get('/:id', userController.getUserById);
+router.get('/:id', userController.getUserProfile);
 
 module.exports = router;
