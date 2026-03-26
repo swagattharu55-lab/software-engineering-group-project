@@ -1,0 +1,17 @@
+extends layout
+
+block content
+  div.card
+    h1 #{user.name}'s Profile
+    p 
+      strong Email: 
+      | #{user.email}
+    p 
+      strong Location: 
+      | #{user.location || 'Not specified'}
+    p 
+      strong Member since: 
+      | #{new Date(user.created_at).toLocaleDateString()}
+    
+    div(style="margin-top:2rem;")
+      a.btn(href="/users") Back to Users

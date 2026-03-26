@@ -2,19 +2,23 @@ const User = require('../models/userModel');
 
 exports.getAllUsers = async (req, res) => {
   try {
-    // const users = await User.getAll(); // Uncomment when table exists
-    res.json({ message: 'Get all users route working', users: [] });
+    const users = await User.getAll();
+    res.render('users', { title: 'Community Users', users });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error(error);
+    res.status(500).send('Server Error');
   }
 };
 
-exports.createUser = async (req, res) => {
+exports.getUserById = async (req, res) => {
   try {
-    const { name, email } = req.body;
-    // const userId = await User.create(name, email); // Uncomment when table exists
-    res.status(201).json({ message: 'User created', userId: 1 });
+    const user = await User.getById(req.params.id);
+    if (!user) {
+      return res.status(404).render('404', { message: 'User not found' });
+    }
+    res.render('profile', { title: `${user.name}'s Profile`, user });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error(error);
+    res.status(500).send('Server Error');
   }
 };

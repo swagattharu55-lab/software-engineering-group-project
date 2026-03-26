@@ -1,0 +1,29 @@
+extends layout
+
+block content
+  div.card
+    div(style="display:flex; justify-content:space-between; align-items:start; border-bottom:1px solid #eee; padding-bottom:1rem; margin-bottom:1rem;")
+      h1(style="margin:0;")= listing.title
+      span.badge(style="font-size:1rem;")= listing.category_name
+    
+    div(style="margin: 1.5rem 0;")
+      h3 Description
+      p(style="font-size:1.1rem; line-height:1.5;")= listing.description
+      
+      h3(style="margin-top:2rem;") Details
+      table(style="width:100%; max-width:500px; text-align:left; border-collapse:collapse;")
+        tr
+          th(style="padding:0.5rem 0; border-bottom:1px solid #eee;") Expiry Date:
+          td(style="padding:0.5rem 0; border-bottom:1px solid #eee;") #{new Date(listing.expiry_date).toLocaleDateString()}
+        tr
+          th(style="padding:0.5rem 0; border-bottom:1px solid #eee;") Shared by:
+          td(style="padding:0.5rem 0; border-bottom:1px solid #eee;") 
+            a(href=`/users/${listing.user_id}`) #{listing.user_name}
+        tr
+          th(style="padding:0.5rem 0; border-bottom:1px solid #eee;") Posted on:
+          td(style="padding:0.5rem 0; border-bottom:1px solid #eee;") #{new Date(listing.created_at).toLocaleDateString()}
+        
+    div(style="margin-top: 2rem; display:flex; gap: 1rem;")
+      a.btn(href="/listings", style="background-color:#757575;") Back to Listings
+      // For now it just prompts the default mail client placeholder 
+      a.btn(href=`mailto:somebody@example.com?subject=FoodShare:%20Request for ${listing.title}`, style="background-color: #ff9800;") Contact Owner to Collect

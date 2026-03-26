@@ -1,20 +1,34 @@
 const express = require('express');
 const dotenv = require('dotenv');
+const path = require('path');
 const db = require('./db');
 
+// Import routes
 const userRoutes = require('./routes/userRoutes');
+const listingRoutes = require('./routes/listingRoutes');
+const categoryRoutes = require('./routes/categoryRoutes');
 
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-app.use(express.json());
+// Set Pug as the view engine
+app.set('view engine', 'pug');
+app.set('views', path.join(__dirname, 'views'));
 
-app.use('/api/users', userRoutes);
+// Middleware
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Routes
+app.use('/users', userRoutes);
+app.use('/listings', listingRoutes);
+app.use('/categories', categoryRoutes);
 
 app.get('/', (req, res) => {
-  res.send('Backend is running!');
+  res.redirect('/listings');
 });
 
 app.get('/db-test', async (req, res) => {

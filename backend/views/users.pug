@@ -1,0 +1,16 @@
+extends layout
+
+block content
+  h1 Community Users
+  p Here are the people reducing food waste in your area.
+  
+  if users.length
+    div(style="display:grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem;")
+      each user in users
+        div.card
+          h3= user.name
+          p Location: #{user.location || 'Not specified'}
+          a.btn(href=`/users/${user.id}`) View Profile
+  else
+    div.card
+      p No users found in the database.

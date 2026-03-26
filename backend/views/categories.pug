@@ -1,0 +1,15 @@
+extends layout
+
+block content
+  h1 Food Categories
+  p Filter available food by choosing a category below.
+  
+  if categories.length
+    div(style="display:grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1.5rem; margin-top:1.5rem;")
+      each category in categories
+        div.card(style="text-align:center; padding:2rem 1rem;")
+          h3(style="font-size:1.5rem;")= category.name
+          a.btn(href=`/categories/${category.id}/listings`, style="margin-top:1rem;") View Items
+  else
+    div.card
+      p No categories found.

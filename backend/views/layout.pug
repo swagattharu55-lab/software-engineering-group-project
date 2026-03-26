@@ -1,0 +1,29 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    title #{title} | Minimising Food Waste
+    style.
+      body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0; background-color: #f4f7f6; color: #333; }
+      nav { background-color: #4CAF50; padding: 1rem 2rem; color: white; display:flex; justify-content: space-between; align-items:center; }
+      nav a { color: white; text-decoration: none; margin-left: 1rem; font-weight: bold; }
+      nav a:hover { text-decoration: underline; }
+      .container { max-width: 1000px; margin: 2rem auto; padding: 0 1rem; }
+      .card { background: white; padding: 1.5rem; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-bottom: 1rem; transition: transform 0.2s; }
+      .card:hover { transform: translateY(-2px); box-shadow: 0 6px 12px rgba(0,0,0,0.15); }
+      .btn { background-color: #4CAF50; color: white; padding: 0.5rem 1rem; text-decoration: none; border-radius: 4px; display: inline-block; font-weight:bold; transition: background-color 0.2s;}
+      .btn:hover { background-color: #45a049; }
+      h1, h2, h3 { color: #2e7d32; margin-top:0; }
+      .badge { background: #e8f5e9; color: #2e7d32; padding: 0.25rem 0.5rem; border-radius: 12px; font-size: 0.85em; font-weight:bold; }
+  body
+    nav
+      div.logo 
+        strong(style="font-size: 1.2rem;") 🥗 FoodShare CR7
+      div.links
+        a(href="/listings") Available Food
+        a(href="/categories") Categories
+        a(href="/users") Community Users
+    
+    div.container
+      block content

@@ -1,0 +1,29 @@
+extends layout
+
+block content
+  div(style="display:flex; justify-content: space-between; align-items:center;")
+    h1= title
+    if categoryName
+      a.btn(href="/categories") View All Categories
+
+  p Browse surplus food shared by the community. 
+
+  if listings.length
+    div(style="display:grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; margin-top:1rem;")
+      each listing in listings
+        div.card
+          div(style="display:flex; justify-content:space-between; align-items:start;")
+            h3(style="margin-bottom:0.5rem;")= listing.title
+            span.badge= listing.category_name
+          p(style="color:#555; margin-top:0.5rem;")= listing.description
+          div(style="margin-top:1rem; border-top: 1px solid #eee; padding-top:1rem;")
+            p(style="margin:0.25rem 0;")
+              small 👤 Shared by: 
+                a(href=`/users/${listing.user_id}`) #{listing.user_name}
+            p(style="margin:0.25rem 0;")
+              small 📅 Expiry: #{new Date(listing.expiry_date).toLocaleDateString()}
+            div(style="margin-top:1rem;")
+              a.btn(href=`/listings/${listing.id}`, style="width:100%; text-align:center; box-sizing:border-box;") View Details
+  else
+    div.card
+      p No food listings available currently. Check back later!

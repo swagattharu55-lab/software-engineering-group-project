@@ -6,9 +6,9 @@ class User {
     return rows;
   }
 
-  static async create(name, email) {
-    const [result] = await db.query('INSERT INTO users (name, email) VALUES (?, ?)', [name, email]);
-    return result.insertId;
+  static async getById(id) {
+    const [rows] = await db.query('SELECT * FROM users WHERE id = ?', [id]);
+    return rows[0];
   }
 }
 
