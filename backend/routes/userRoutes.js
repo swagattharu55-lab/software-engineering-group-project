@@ -8,3 +8,4 @@ router.get('/:id', userController.getUserProfile);
 
 module.exports = router;
 //- Route configurations
+//- Profiling endpoints
