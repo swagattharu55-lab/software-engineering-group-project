@@ -15,3 +15,4 @@ class Rating {
   }
 }
 module.exports = Rating;
+//- Rating aggregation logic
