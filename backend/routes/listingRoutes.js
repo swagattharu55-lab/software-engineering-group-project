@@ -10,3 +10,4 @@ router.get('/:id', listingController.getListingById);
 
 module.exports = router;
 //- Listing endpoints
+//- Map and coordinate handlers
