@@ -79,3 +79,4 @@ class Listing {
 
 module.exports = Listing;
 //- Listing filters
+//- Extended inventory parameters
