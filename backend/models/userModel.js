@@ -27,3 +27,4 @@ class User {
 
 module.exports = User;
 //- Model query extensions
+//- User authentication models
