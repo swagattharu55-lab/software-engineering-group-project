@@ -80,3 +80,4 @@ INSERT IGNORE INTO users (id, name, email, password, location, role) VALUES
 (1, 'Sarah', 'sarah@student.uni.ac.uk', '$2b$10$wN3tXX149G9rQZzG7oZ7Iee9A3Wf4rZ3QZ3QZ3QZ3QZ3QZ3QZ3QZ3', 'Student Halls', 'user'),
 (2, 'Ahmed', 'ahmed@local.email.com', '$2b$10$wN3tXX149G9rQZzG7oZ7Iee9A3Wf4rZ3QZ3QZ3QZ3QZ3QZ3QZ3QZ3', 'City Centre', 'user'),
 (3, 'Admin', 'admin@foodshare.com', '$2b$10$wN3tXX149G9rQZzG7oZ7Iee9A3Wf4rZ3QZ3QZ3QZ3QZ3QZ3QZ3QZ3', 'System', 'admin');
+-- Schema tables established
