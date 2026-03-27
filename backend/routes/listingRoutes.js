@@ -9,3 +9,4 @@ router.post('/:id/delete', listingController.deleteListing);
 router.get('/:id', listingController.getListingById);
 
 module.exports = router;
+//- Listing endpoints
